@@ -1,7 +1,8 @@
 package corp.dean.fruits.boundary;
 
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -20,19 +21,21 @@ import corp.dean.fruits.model.Fruit;
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/fruits")
 public class FruitsResource {
-    
+    //FruitService f = new FruitService();
     @Inject
-    FruitService fruitService;
+    FruitService fruitService = new FruitService();
     //Get request for all fruits in JSON format
+    ArrayList<Fruit> fruitList = fruitService.getFruits();
     @GET
-    public List<Fruit> getFruits(){
+    public ArrayList<Fruit> getFruits(){
         System.out.println("Displayed all Fruits");
         return fruitService.getFruits();
     }
     //Post request using body
     @POST
     @Path("/save")
-    public List<Fruit> saveFruits(Fruit fruits){
+    public ArrayList<Fruit> saveFruits(Fruit fruits){
+        fruitService.addFruit(fruits.getFruitName(), fruits.getFruitColour());
         System.out.println("Saved fruit name: "+fruits.getFruitName()+"\nSaved fruit colour: " +fruits.getFruitColour());
         return fruitService.getFruits();
     }
@@ -40,15 +43,16 @@ public class FruitsResource {
     @POST
     @Path("/save1")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response saveFruits1(@QueryParam("fruitName") String fruitName, @QueryParam("fruitColour") String fruitColour){
+    public ArrayList<Fruit> saveFruits1(@QueryParam("fruitName") String fruitName, @QueryParam("fruitColour") String fruitColour){
+        fruitService.addFruit(fruitName, fruitColour);
         System.out.println("Saved fruit name: "+fruitName+"\nSaved fruit colour: " +fruitColour);
-        return Response.ok().build();
+        return fruitService.getFruits();
     }
     //Delete request where fruitname =  fruitname
     @DELETE
     @Path("/delete")
-    public List<Fruit> deleteFruits(@QueryParam("fruitName") String fruitName){
-
+    public ArrayList<Fruit> deleteFruits(@QueryParam("fruitName") String fruitName){
+        fruitService.deleteFruit(fruitName);
         System.out.println("Deleted fruit where fruit name = "+fruitName);
         return fruitService.getFruits();
     }
