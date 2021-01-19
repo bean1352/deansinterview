@@ -24,14 +24,16 @@ public class FruitsResource {
     //FruitService f = new FruitService();
     @Inject
     FruitService fruitService = new FruitService();
-    //Get request for all fruits in JSON format
     ArrayList<Fruit> fruitList = fruitService.getFruits();
+    //Get request for all fruits in JSON format
+    //http://localhost:8080/fruits
     @GET
     public ArrayList<Fruit> getFruits(){
         System.out.println("Displayed all Fruits");
         return fruitService.getFruits();
     }
     //Post request using body
+    //http://localhost:8080/fruits/save (add this body: {"fruitColour": "Green","fruitName": "Apple"})
     @POST
     @Path("/save")
     public ArrayList<Fruit> saveFruits(Fruit fruits){
@@ -40,6 +42,7 @@ public class FruitsResource {
         return fruitService.getFruits();
     }
     //Post request using query parameters
+    //http://localhost:8080/fruits/save1?fruitName=Orange&fruitColour=Orange
     @POST
     @Path("/save1")
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,6 +52,7 @@ public class FruitsResource {
         return fruitService.getFruits();
     }
     //Delete request where fruitname =  fruitname
+    //http://localhost:8080/fruits/delete?fruitName=Orange
     @DELETE
     @Path("/delete")
     public ArrayList<Fruit> deleteFruits(@QueryParam("fruitName") String fruitName){
